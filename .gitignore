@@ -1,0 +1,6 @@
+**/.DS_Store
+trost
+.qmake.stash
+Makefile
+*_moc.h
+*.o

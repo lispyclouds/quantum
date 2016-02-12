@@ -1,0 +1,6 @@
+#ifndef QUANTUM_INCLUDE_CONSTANTS_
+#define QUANTUM_INCLUDE_CONSTANTS_
+
+char QUANTUM_VERSION[] = "1.0.0";
+
+#endif
