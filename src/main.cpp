@@ -2,7 +2,7 @@
 
 #include <QtCore/QCoreApplication>
 
-#include <include/constants.h>
+#include <quantum_constants.h>
 
 using namespace std;
 
