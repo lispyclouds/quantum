@@ -1,6 +1,8 @@
 # Quantum
 
-## building and running on OSX (more coming soon...)
+[![Build Status](https://travis-ci.org/trost-lang/quantum.svg?branch=master)](https://travis-ci.org/trost-lang/quantum)
+
+## Building and running on OSX (more coming soon...)
 - ``` brew install qt5 ```
 - find where qmake is usually its in /usr/local/opt/qt5/bin/
 - ``` qmake -o Makefile quantum.pro -recursive -spec macx-clang ```
