@@ -56,16 +56,21 @@ void VM::run() {
     qint8 index;
     SymData data;
     StackFrame frame;
+    bool b_val = true;
 
     static void* dispatch_table[] = {
-        &&HALT,   // 0x0
-        &&ICONST, // 0x1
-        &&SET,    // 0x2
-        &&LOAD,   // 0x3
-        &&PRINT   // 0x4
+        &&HALT,
+        &&ICONST,
+        &&FCONST,
+        &&SCONST,
+        &&BOOL_T,
+        &&BOOL_F,
+        &&SET,
+        &&LOAD,
+        &&PRINT
     };
 
-    #define DISPATCH() goto *dispatch_table[fetch()];
+    #define DISPATCH() goto *dispatch_table[fetch()]
 
     DISPATCH();
 
@@ -75,6 +80,25 @@ void VM::run() {
     ICONST:
         index = fetch();
         this->bytecodeStack.push(this->makeFrameOf(constants[index].data, INT));
+        DISPATCH();
+
+    FCONST:
+        index = fetch();
+        this->bytecodeStack.push(this->makeFrameOf(constants[index].data, FLOAT));
+        DISPATCH();
+
+    SCONST:
+        index = fetch();
+        this->bytecodeStack.push(this->makeFrameOf(constants[index].data, STRING));
+        DISPATCH();
+
+    BOOL_T:
+        this->bytecodeStack.push(this->makeFrameOf(&b_val, BOOL));
+        DISPATCH();
+
+    BOOL_F:
+        b_val = false;
+        this->bytecodeStack.push(this->makeFrameOf(&b_val, BOOL));
         DISPATCH();
 
     SET:
