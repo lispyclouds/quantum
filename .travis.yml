@@ -1,0 +1,9 @@
+language: C++
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq qtdeclarative5-dev
+
+script: qmake -o Makefile quantum.pro
+script: make -j $(grep -c ^processor /proc/cpuinfo)
+script: python test_quantum.py
