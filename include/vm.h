@@ -9,6 +9,7 @@
 #include <QVector>
 
 #include "vmstructs/constant.h"
+#include "vmstructs/datatypes.h"
 #include "vmstructs/stackframe.h"
 
 using namespace std;

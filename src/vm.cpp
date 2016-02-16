@@ -74,7 +74,7 @@ void VM::run() {
 
     ICONST:
         index = fetch();
-        this->bytecodeStack.push(this->makeFrameOf(constants[index].data, 0));
+        this->bytecodeStack.push(this->makeFrameOf(constants[index].data, INT));
         DISPATCH();
 
     SET:
