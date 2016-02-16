@@ -6,6 +6,7 @@
 - ``` qmake -o Makefile quantum.pro -recursive -spec macx-clang ```
 - ``` make -j $(sysctl -n hw.ncpu) ```
 - ``` ./quantum test/simple.json ```
+- Run tests with ``` python test_quantum.py ``` (Python 2.7+ needed)
 
 ## Developing
 - Write awesome code
