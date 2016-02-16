@@ -10,7 +10,8 @@ TEMPLATE                  = app
 
 INCLUDEPATH              += include
 
-SOURCES                  += src/vm.cpp \
+SOURCES                  += src/core/valuemanip.cpp \
+                            src/vm.cpp \
                             src/main.cpp
 
 INSTALLS                 += target

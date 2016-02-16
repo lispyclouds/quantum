@@ -55,8 +55,9 @@ quint8 VM::fetch() {
 void VM::run() {
     qint8 index;
     SymData data;
-    StackFrame frame;
+    StackFrame frame, aux_frame;
     bool b_val = true;
+    void* result;
 
     static void* dispatch_table[] = {
         &&HALT,
@@ -65,6 +66,10 @@ void VM::run() {
         &&SCONST,
         &&BOOL_T,
         &&BOOL_F,
+        &&ADD,
+        &&SUB,
+        &&MUL,
+        &&DIV,
         &&SET,
         &&LOAD,
         &&PRINT
@@ -99,6 +104,22 @@ void VM::run() {
     BOOL_F:
         b_val = false;
         this->bytecodeStack.push(this->makeFrameOf(&b_val, BOOL));
+        DISPATCH();
+
+    ADD:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::quantum_add(frame.content, aux_frame.content, frame.dataType);
+        this->bytecodeStack.push(this->makeFrameOf(result, frame.dataType));
+        DISPATCH();
+
+    SUB:
+        DISPATCH();
+
+    MUL:
+        DISPATCH();
+
+    DIV:
         DISPATCH();
 
     SET:

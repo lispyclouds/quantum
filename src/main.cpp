@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     parser.process(app);
     const QStringList args = parser.positionalArguments();
 
-    if (args.size() == 0)
+    if (args.size() != 1)
         parser.showHelp(-1);
 
     QVector<Constant> constants;

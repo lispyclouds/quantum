@@ -8,9 +8,10 @@
 #include <QStack>
 #include <QVector>
 
-#include "vmstructs/constant.h"
-#include "vmstructs/datatypes.h"
-#include "vmstructs/stackframe.h"
+#include <core/valuemanip.h>
+#include <vmstructs/constant.h>
+#include <vmstructs/datatypes.h>
+#include <vmstructs/stackframe.h>
 
 using namespace std;
 
