@@ -1,19 +1,16 @@
 #ifndef QUANTUM_INCLUDE_VM_
 #define QUANTUM_INCLUDE_VM_
 
-#include <iostream>
-
 #include <QtGlobal>
 #include <QHash>
 #include <QStack>
+#include <QTextStream>
 #include <QVector>
 
 #include <core/valuemanip.h>
 #include <vmstructs/constant.h>
 #include <vmstructs/datatypes.h>
 #include <vmstructs/stackframe.h>
-
-using namespace std;
 
 struct SymData {
     int type;

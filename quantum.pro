@@ -28,9 +28,7 @@ QMAKE_CFLAGS_RELEASE     -= -O2
 linux {
   target.path            = /usr/local/bin
   QMAKE_CFLAGS_RELEASE   += -O3
-  QMAKE_CFLAGS_RELEASE   += -Wno-unknown-attributes
   QMAKE_CXXFLAGS_RELEASE += -O3
-  QMAKE_CXXFLAGS_RELEASE += -Wno-unknown-attributes
 }
 
 macx {

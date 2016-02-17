@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import unittest
 from subprocess import check_output
 
@@ -9,7 +11,7 @@ def run(json):
 class Quantum_Test(unittest.TestCase):
 
     def test_print_int(self):
-        self.assertEqual("345", run("print.json"))
+        self.assertEqual("नमस्ते, Hello, Привет, 您好, ہیلو", run("print.json"))
 
     def test_add_floats(self):
         self.assertEqual("44.21", run("add.json"))

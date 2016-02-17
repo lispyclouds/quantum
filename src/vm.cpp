@@ -22,19 +22,19 @@ void VM::printToStdOut(void* content, qint8 type) {
     goto *type_table[type];
 
     INT:
-        cout << *(qint64 *) content << endl;
+        QTextStream(stdout) << *(qint64 *) content << endl;
         return;
 
     FLOAT:
-        cout << *(double *) content << endl;
+        QTextStream(stdout) << *(double *) content << endl;
         return;
 
     STR:
-        cout << QString(*(QString *) content).toStdString() << endl;
+        QTextStream(stdout) << QString(*(QString *) content) << endl;
         return;
 
     BOOL:
-        cout << *(bool *) content << endl;
+        QTextStream(stdout) << *(bool *) content << endl;
         return;
 }
 
