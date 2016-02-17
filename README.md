@@ -4,6 +4,14 @@
 
 ## Building and running on OSX (more coming soon...)
 - ``` brew install qt5 ```
+- ``` brew install autoconf ```
+- ``` brew install automake ```
+- In the **libgc** directory
+- ``` autoreconf -vif ```
+- ``` automake --add-missing ```
+- ``` ./configure --prefix=/tmp/gc --enable-threads=posix --enable-thread-local-alloc --enable-parallel-mark --enable-cplusplus ```
+- ``` make -j $(sysctl -n hw.ncpu) ```
+- ``` make install ```
 - find where qmake is usually its in /usr/local/opt/qt5/bin/
 - ``` qmake -o Makefile quantum.pro -recursive -spec macx-clang ```
 - ``` make -j $(sysctl -n hw.ncpu) ```
