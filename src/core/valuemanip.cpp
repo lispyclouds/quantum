@@ -15,17 +15,17 @@ void* ValueManip::quantum_add(void* d1, void* d2, qint8 type) {
     goto *type_table[type];
 
     INT:
-        result = malloc(sizeof(qint64));
+        result = new(GC) qint64();
         *((qint64 *) result) = *(qint64 *) d1 + *(qint64 *) d2;
         return result;
 
     FLOAT:
-        result = malloc(sizeof(double));
+        result = new(GC) double();
         *((double *) result) = *(double *) d1 + *(double *) d2;
         return result;
 
     STR:
-        result = new QString();
+        result = new(GC) QString();
         *((QString *) result) = *(QString *) d1 + *(QString *) d2;
         return result;
 }

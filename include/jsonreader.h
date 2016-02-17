@@ -11,6 +11,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QVector>
+#include <gc_cpp.h>
 
 #include <vmstructs/constant.h>
 
@@ -45,14 +46,14 @@ void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &
             QString::number(value).toInt(&ok);
 
             if (ok)
-                ptr = new qint64(value);
+                ptr = new(GC) qint64(value);
             else
-                ptr = new double(value);
+                ptr = new(GC) double(value);
         }
         else if (arr[i].isBool())
-            ptr = new bool(arr[i].toBool());
+            ptr = new(GC) bool(arr[i].toBool());
         else if (arr[i].isString())
-            ptr = new QString(arr[i].toString());
+            ptr = new(GC) QString(arr[i].toString());
 
         c.data = ptr;
         constants.push_back(c);

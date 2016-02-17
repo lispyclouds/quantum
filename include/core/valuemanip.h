@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <QString>
+#include <gc_cpp.h>
 
 class ValueManip {
 public:

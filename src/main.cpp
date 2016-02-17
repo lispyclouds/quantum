@@ -2,6 +2,7 @@
 
 #include <QCommandLineParser>
 #include <QCoreApplication>
+#include <gc_cpp.h>
 
 #include <jsonreader.h>
 #include <quantum_constants.h>
@@ -33,6 +34,7 @@ int main(int argc, char **argv) {
 
     readJSON(args[0], constants, symbols, bytecodes);
 
+    GC_INIT();
     VM vm(constants, symbols, bytecodes);
     vm.run();
 
