@@ -3,7 +3,7 @@ from subprocess import check_output
 
 
 def run(json):
-    return check_output(["./quantum", "test_jsons/%s" % json]).strip()
+    return check_output(["./quantum", "jsons/%s" % json]).strip()
 
 
 class Quantum_Test(unittest.TestCase):

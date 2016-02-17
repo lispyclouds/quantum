@@ -7,7 +7,7 @@
 - find where qmake is usually its in /usr/local/opt/qt5/bin/
 - ``` qmake -o Makefile quantum.pro -recursive -spec macx-clang ```
 - ``` make -j $(sysctl -n hw.ncpu) ```
-- ``` ./quantum test/simple.json ```
+- ``` ./quantum <json.file> ``` (Sample files in jsons dir)
 - Run tests with ``` python test_quantum.py ``` (Python 2.7+ needed)
 
 ## Developing
