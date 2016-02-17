@@ -12,7 +12,8 @@
 - ``` ./configure --prefix=/tmp/gc --enable-threads=posix --enable-thread-local-alloc --enable-parallel-mark --enable-cplusplus ```
 - ``` make -j $(sysctl -n hw.ncpu) ```
 - ``` make install ```
-- find where qmake is usually its in /usr/local/opt/qt5/bin/
+- find where qmake is. Usually its in /usr/local/opt/qt5/bin/
+- In the **quantum** directory
 - ``` qmake -o Makefile quantum.pro -recursive -spec macx-clang ```
 - ``` make -j $(sysctl -n hw.ncpu) ```
 - ``` ./quantum <json.file> ``` (Sample files in jsons dir)
