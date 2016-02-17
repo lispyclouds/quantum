@@ -9,7 +9,10 @@ CONFIG                   -= app_bundle
 
 TEMPLATE                  = app
 
-INCLUDEPATH              += include
+LIBS                     += /tmp/gc/lib/libgc.a
+
+INCLUDEPATH              += include \
+                            /tmp/gc/include
 
 SOURCES                  += src/core/valuemanip.cpp \
                             src/vm.cpp \
