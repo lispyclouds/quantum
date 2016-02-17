@@ -6,67 +6,63 @@
 #include <QByteArray>
 #include <QFile>
 #include <QtGlobal>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
 #include <QVector>
 #include <gc_cpp.h>
+#include <rapidjson/document.h>
 
 #include <vmstructs/constant.h>
 
 using namespace std;
+using namespace rapidjson;
 
 void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &symbols, QVector<quint8> &bytecodes) {
-    QFile json(fileName);
+    QFile jsonFile(fileName);
 
-    if (!json.open(QIODevice::ReadOnly)) {
+    if (!jsonFile.open(QIODevice::ReadOnly)) {
         cerr << "Couldn't open JSON file." << endl;
         exit(-2);
     }
 
-    QByteArray data = json.readAll();
-    QJsonDocument doc(QJsonDocument::fromJson(data));
-    if (doc.isNull()) {
-        cerr << "Invalid JSON file." << endl;
+    QByteArray array = jsonFile.readAll();
+    jsonFile.close();
+
+    const char *json = array.constData();
+    Document document;
+
+    char *buffer = new(GC) char[array.size()];
+    memcpy(buffer, json, array.size());
+    if (document.ParseInsitu(buffer).HasParseError()) {
+        cerr << "JSON file contains errors" << endl;
         exit(-3);
     }
 
-    const QJsonObject code = doc.object();
-    QJsonArray arr;
     void* ptr;
     Constant c;
-    int i;
+    SizeType i;
 
-    arr = code["constants"].toArray();
-    for (i = 0; i < arr.size(); i++) {
-        if (arr[i].isDouble()) {
-            bool ok;
-            double value = arr[i].toDouble();
-            QString::number(value).toInt(&ok);
-
-            if (ok)
-                ptr = new(GC) qint64(value);
-            else
-                ptr = new(GC) double(value);
-        }
-        else if (arr[i].isBool())
-            ptr = new(GC) bool(arr[i].toBool());
-        else if (arr[i].isString())
-            ptr = new(GC) QString(arr[i].toString());
+    Value& arr = document["constants"];
+    for (i = 0; i < arr.Size(); i++) {
+        if (arr[i].IsInt())
+            ptr = new(GC) qint64(arr[i].GetInt());
+        else if (arr[i].IsDouble())
+            ptr = new(GC) double(arr[i].GetDouble());
+        else if (arr[i].IsBool())
+            ptr = new(GC) bool(arr[i].GetBool());
+        else if (arr[i].IsString())
+            ptr = new(GC) QString(arr[i].GetString());
 
         c.data = ptr;
         constants.push_back(c);
     }
 
-    arr = code["symbols"].toArray();
-    for (i = 0; i < arr.size(); i++) {
-        symbols.push_back(arr[i].toString());
+    arr = document["symbols"];
+    for (i = 0; i < arr.Size(); i++) {
+        symbols.push_back(QString(arr[i].GetString()));
     }
 
-    arr = code["bytecodes"].toArray();
-    for (i = 0; i < arr.size(); i++) {
-        bytecodes.push_back(arr[i].toInt());
+    arr = document["bytecodes"];
+    for (i = 0; i < arr.Size(); i++) {
+        bytecodes.push_back(arr[i].GetInt());
     }
 }
 
