@@ -35,6 +35,9 @@ private:
     inline void printToStdOut(void* content, qint8 type);
     inline StackFrame makeFrameOf(void* content, qint8 dataType, bool callable);
     inline quint8 fetch();
+
+    template <class T>
+    static T* isDivisorZero(T* divisor);
 };
 
 #endif

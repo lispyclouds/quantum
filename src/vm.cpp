@@ -52,6 +52,22 @@ quint8 VM::fetch() {
     return this->bytecodes[this->sp++];
 }
 
+template <class T>
+T* VM::isDivisorZero(T* divisor) {
+    static void* is_zero[] = {
+        &&NOT_ZERO,
+        &&ZERO
+    };
+    goto *is_zero[!(*divisor || 0)]; // Freaky Stuff huh :P ??
+
+    NOT_ZERO:
+        return divisor;
+
+    ZERO:
+        cerr << "Fatal Error: Division by ZERO." << endl;
+        exit(-4);
+}
+
 void VM::run() {
     qint8 index;
     SymData data;
@@ -137,7 +153,7 @@ void VM::run() {
     IDIV:
         frame = this->bytecodeStack.pop();
         aux_frame = this->bytecodeStack.pop();
-        result = ValueManip::div((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        result = ValueManip::div((qint64 *) aux_frame.content, VM::isDivisorZero((qint64 *) frame.content));
         this->bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
@@ -165,7 +181,7 @@ void VM::run() {
     FDIV:
         frame = this->bytecodeStack.pop();
         aux_frame = this->bytecodeStack.pop();
-        result = ValueManip::div((double *) aux_frame.content, (double *) frame.content);
+        result = ValueManip::div((double *) aux_frame.content, VM::isDivisorZero((double *) frame.content));
         this->bytecodeStack.push(this->makeFrameOf(result, FLOAT));
         DISPATCH();
 
