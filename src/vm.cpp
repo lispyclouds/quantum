@@ -30,7 +30,7 @@ void VM::printToStdOut(void* content, qint8 type) {
         return;
 
     STR:
-        QTextStream(stdout) << QString(*(QString *) content) << endl;
+        QTextStream(stdout) << *(QString *) content << endl;
         return;
 
     BOOL:
@@ -58,6 +58,7 @@ void VM::run() {
     StackFrame frame, aux_frame;
     bool b_val = true;
     void* result;
+    double *legRoom;
 
     static void* dispatch_table[] = {
         &&HALT,
@@ -66,10 +67,15 @@ void VM::run() {
         &&SCONST,
         &&BOOL_T,
         &&BOOL_F,
-        &&ADD,
-        &&SUB,
-        &&MUL,
-        &&DIV,
+        &&IADD,
+        &&ISUB,
+        &&IMUL,
+        &&IDIV,
+        &&FADD,
+        &&FSUB,
+        &&FMUL,
+        &&FDIV,
+        &&I2F,
         &&SET,
         &&LOAD,
         &&PRINT
@@ -106,20 +112,67 @@ void VM::run() {
         this->bytecodeStack.push(this->makeFrameOf(&b_val, BOOL));
         DISPATCH();
 
-    ADD:
+    IADD:
         frame = this->bytecodeStack.pop();
         aux_frame = this->bytecodeStack.pop();
-        result = ValueManip::quantum_add(aux_frame.content, frame.content, frame.dataType);
-        this->bytecodeStack.push(this->makeFrameOf(result, frame.dataType));
+        result = ValueManip::add((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
-    SUB:
+    ISUB:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::sub((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
-    MUL:
+    IMUL:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::mul((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
-    DIV:
+    IDIV:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::div((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, INT));
+        DISPATCH();
+
+    FADD:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::add((double *) aux_frame.content, (double *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, FLOAT));
+        DISPATCH();
+
+    FSUB:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::sub((double *) aux_frame.content, (double *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, FLOAT));
+        DISPATCH();
+
+    FMUL:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::mul((double *) aux_frame.content, (double *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, FLOAT));
+        DISPATCH();
+
+    FDIV:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::div((double *) aux_frame.content, (double *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, FLOAT));
+        DISPATCH();
+
+    I2F:
+        frame = this->bytecodeStack.pop();
+        legRoom = new(GC) double();
+        *legRoom = *(qint64 *) frame.content;
+        this->bytecodeStack.push(this->makeFrameOf(legRoom, FLOAT));
         DISPATCH();
 
     SET:
