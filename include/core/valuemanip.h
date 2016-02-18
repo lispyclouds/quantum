@@ -19,6 +19,7 @@ public:
     static void* mul(double* d1, double* d2);
     static void* div(qint64* d1, qint64* d2);
     static void* div(double* d1, double* d2);
+    static void* add(QString* d1, QString* d2);
 };
 
 #endif

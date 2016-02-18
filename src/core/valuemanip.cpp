@@ -55,3 +55,10 @@ void* ValueManip::div(double* d1, double* d2) {
 
     return result;
 }
+
+void* ValueManip::add(QString* d1, QString* d2) {
+    void* result = new(GC) QString();
+    *((QString *) result) = *(QString *) d1 + *(QString *) d2;
+
+    return result;
+}

@@ -78,7 +78,8 @@ void VM::run() {
         &&I2F,
         &&SET,
         &&LOAD,
-        &&PRINT
+        &&PRINT,
+        &&SCAT
     };
 
     #define DISPATCH() goto *dispatch_table[fetch()]
@@ -192,5 +193,12 @@ void VM::run() {
     PRINT:
         frame = this->bytecodeStack.pop();
         this->printToStdOut(frame.content, frame.dataType);
+        DISPATCH();
+
+    SCAT:
+        frame = this->bytecodeStack.pop();
+        aux_frame = this->bytecodeStack.pop();
+        result = ValueManip::add((QString *) aux_frame.content, (QString *) frame.content);
+        this->bytecodeStack.push(this->makeFrameOf(result, STRING));
         DISPATCH();
 }
