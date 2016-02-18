@@ -14,8 +14,7 @@ LIBS                     += /tmp/gc/lib/libgc.a
 INCLUDEPATH              += include \
                             /tmp/gc/include
 
-SOURCES                  += src/core/valuemanip.cpp \
-                            src/vm.cpp \
+SOURCES                  += src/vm.cpp \
                             src/main.cpp
 
 INSTALLS                 += target

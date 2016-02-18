@@ -7,7 +7,7 @@
 #include <QTextStream>
 #include <QVector>
 
-#include <core/valuemanip.h>
+#include <core/valuemanip.hpp>
 #include <vmstructs/constant.h>
 #include <vmstructs/datatypes.h>
 #include <vmstructs/stackframe.h>
