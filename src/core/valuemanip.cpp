@@ -1,8 +1,4 @@
-#include <iostream>
-
 #include <core/valuemanip.h>
-
-using namespace std;
 
 void* ValueManip::quantum_add(void* d1, void* d2, qint8 type) {
     static void* type_table[] = {

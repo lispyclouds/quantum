@@ -109,7 +109,7 @@ void VM::run() {
     ADD:
         frame = this->bytecodeStack.pop();
         aux_frame = this->bytecodeStack.pop();
-        result = ValueManip::quantum_add(frame.content, aux_frame.content, frame.dataType);
+        result = ValueManip::quantum_add(aux_frame.content, frame.content, frame.dataType);
         this->bytecodeStack.push(this->makeFrameOf(result, frame.dataType));
         DISPATCH();
 
