@@ -9,10 +9,10 @@ CONFIG                   -= app_bundle
 
 TEMPLATE                  = app
 
-LIBS                     += /tmp/gc/lib/libgc.a
+LIBS                     += $$PWD/gc_compiled/lib/libgc.a
 
 INCLUDEPATH              += include \
-                            /tmp/gc/include
+                            $$PWD/gc_compiled/include
 
 SOURCES                  += src/vm.cpp \
                             src/main.cpp
