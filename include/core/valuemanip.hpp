@@ -12,7 +12,7 @@ using namespace std;
 class ValueManip {
 public:
     template <class T>
-    static void* add(T* d1, T* d2) {
+    static inline void* add(T* d1, T* d2) {
         void* result = new(GC) T();
         *((T *) result) = *(T *) d1 + *(T *) d2;
 
@@ -20,7 +20,7 @@ public:
     }
 
     template <class T>
-    static void* sub(T* d1, T* d2) {
+    static inline void* sub(T* d1, T* d2) {
         void* result = new(GC) T();
         *((T *) result) = *(T *) d1 - *(T *) d2;
 
@@ -28,7 +28,7 @@ public:
     }
 
     template <class T>
-    static void* mul(T* d1, T* d2) {
+    static inline void* mul(T* d1, T* d2) {
         void* result = new(GC) T();
         *((T *) result) = *(T *) d1 * *(T *) d2;
 
@@ -36,7 +36,7 @@ public:
     }
 
     template <class T>
-    static void* div(T* d1, T* d2) {
+    static inline void* div(T* d1, T* d2) {
         void* result = new(GC) T();
         *((T *) result) = *(T *) d1 / *(T *) d2;
 

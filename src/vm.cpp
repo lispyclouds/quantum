@@ -53,7 +53,7 @@ quint8 VM::fetch() {
 }
 
 template <class T>
-T* VM::isDivisorZero(T* divisor) {
+T* VM::checkDivideByZero(T* divisor) {
     static void* is_zero[] = {
         &&NOT_ZERO,
         &&ZERO
@@ -153,7 +153,7 @@ void VM::run() {
     IDIV:
         frame = this->bytecodeStack.pop();
         aux_frame = this->bytecodeStack.pop();
-        result = ValueManip::div((qint64 *) aux_frame.content, VM::isDivisorZero((qint64 *) frame.content));
+        result = ValueManip::div((qint64 *) aux_frame.content, VM::checkDivideByZero((qint64 *) frame.content));
         this->bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
@@ -181,7 +181,7 @@ void VM::run() {
     FDIV:
         frame = this->bytecodeStack.pop();
         aux_frame = this->bytecodeStack.pop();
-        result = ValueManip::div((double *) aux_frame.content, VM::isDivisorZero((double *) frame.content));
+        result = ValueManip::div((double *) aux_frame.content, VM::checkDivideByZero((double *) frame.content));
         this->bytecodeStack.push(this->makeFrameOf(result, FLOAT));
         DISPATCH();
 

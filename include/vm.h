@@ -37,7 +37,7 @@ private:
     inline quint8 fetch();
 
     template <class T>
-    static T* isDivisorZero(T* divisor);
+    static T* checkDivideByZero(T* divisor);
 };
 
 #endif
