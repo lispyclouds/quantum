@@ -35,8 +35,8 @@ int main(int argc, char **argv) {
     readJSON(args[0], constants, symbols, bytecodes);
 
     GC_INIT();
-    VM vm(constants, symbols, bytecodes);
-    vm.run();
+    VM vm;
+    vm.run(constants, symbols, bytecodes);
 
     return 0;
 }

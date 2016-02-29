@@ -19,22 +19,11 @@ struct SymData {
 
 class VM {
 public:
-    VM(QVector<Constant> constants, QVector<QString> symbols, QVector<quint8> bytecodes);
-    ~VM();
-
-    void run();
+    void run(QVector<Constant> constants, QVector<QString> symbols, QVector<quint8> bytecodes);
 
 private:
-    QVector<Constant> constants;
-    QHash<QString, SymData> symbolTable;
-    QVector<quint8> bytecodes;
-    QStack<StackFrame> bytecodeStack;
-    QVector<QString> symbols;
-    int sp;
-
     inline void printToStdOut(void* content, qint8 type);
     inline StackFrame makeFrameOf(void* content, qint8 dataType, bool callable);
-    inline quint8 fetch();
 
     template <class T>
     static T* checkDivideByZero(T* divisor);
