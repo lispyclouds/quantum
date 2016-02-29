@@ -64,6 +64,8 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
     void* result;
     double *legRoom;
 
+    bytecodes.push_back(0);
+
     static void* dispatch_table[] = {
         &&HALT,
         &&ICONST,
