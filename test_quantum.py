@@ -25,5 +25,8 @@ class Quantum_Test(unittest.TestCase):
     def test_scat(self):
         self.assertEqual("Hello, World!", run("scat.json"))
 
+    def test_fucntion(self):
+        self.assertEqual("17", run("function.json"))
+
 if __name__ == '__main__':
     unittest.main()
