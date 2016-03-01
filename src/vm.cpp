@@ -59,6 +59,7 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
     qint8 index;
     int sp = 0;
     SymData data;
+    Function f;
     StackFrame frame, aux_frame;
     bool b_val = true;
     void* result;
@@ -67,25 +68,28 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
     bytecodes.push_back(0);
 
     static void* dispatch_table[] = {
-        &&HALT,
-        &&ICONST,
-        &&FCONST,
-        &&SCONST,
-        &&BOOL_T,
-        &&BOOL_F,
-        &&IADD,
-        &&ISUB,
-        &&IMUL,
-        &&IDIV,
-        &&FADD,
-        &&FSUB,
-        &&FMUL,
-        &&FDIV,
-        &&I2F,
-        &&SET,
-        &&LOAD,
-        &&PRINT,
-        &&SCAT
+        &&HALT,   // 0
+        &&ICONST, // 1
+        &&FCONST, // 2
+        &&SCONST, // 3
+        &&BOOL_T, // 4
+        &&BOOL_F, // 5
+        &&IADD,   // 6
+        &&ISUB,   // 7
+        &&IMUL,   // 8
+        &&IDIV,   // 9
+        &&FADD,   // 10
+        &&FSUB,   // 11
+        &&FMUL,   // 12
+        &&FDIV,   // 13
+        &&I2F,    // 14
+        &&SET,    // 15
+        &&LOAD,   // 16
+        &&PRINT,  // 17
+        &&SCAT,   // 18
+        &&FUNC,   // 19
+        &&CALL,   // 20
+        &&RET     // 21
     };
 
     #define DISPATCH() goto *dispatch_table[FETCH()]
@@ -93,6 +97,8 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
 
     DISPATCH();
 
+    RET:
+        this->functionReturnFrame = bytecodeStack.pop();
     HALT:
         return;
 
@@ -207,5 +213,19 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         aux_frame = bytecodeStack.pop();
         result = ValueManip::add((QString *) aux_frame.content, (QString *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, STRING));
+        DISPATCH();
+
+    FUNC:
+        index = FETCH();
+        bytecodeStack.push(this->makeFrameOf(&functions[index], FUNCTION, true));
+        DISPATCH();
+
+    CALL:
+        index = FETCH();
+        f = *(Function *) symbolTable[symbols[index]].value;
+        f.constants.append(constants);
+        f.symbols.append(symbols);
+        this->run(f.constants, f.symbols, f.bytecodes);
+        bytecodeStack.push(this->functionReturnFrame);
         DISPATCH();
 }

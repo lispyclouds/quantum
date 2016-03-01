@@ -8,6 +8,7 @@
 #include <quantum_constants.h>
 #include <vm.h>
 #include <vmstructs/constant.h>
+#include <vmstructs/function.h>
 
 using namespace std;
 
@@ -31,11 +32,12 @@ int main(int argc, char **argv) {
     QVector<Constant> constants;
     QVector<QString> symbols;
     QVector<quint8> bytecodes;
+    QVector<Function> functions;
 
-    readJSON(args[0], constants, symbols, bytecodes);
+    readJSON(args[0], constants, symbols, bytecodes, functions);
 
     GC_INIT();
-    VM vm;
+    VM vm(functions);
     vm.run(constants, symbols, bytecodes);
 
     return 0;

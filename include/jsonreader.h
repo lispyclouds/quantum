@@ -11,11 +11,12 @@
 #include <rapidjson/document.h>
 
 #include <vmstructs/constant.h>
+#include <vmstructs/function.h>
 
 using namespace std;
 using namespace rapidjson;
 
-void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &symbols, QVector<quint8> &bytecodes) {
+void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &symbols, QVector<quint8> &bytecodes, QVector<Function> &functions) {
     QFile jsonFile(fileName);
 
     if (!jsonFile.open(QIODevice::ReadOnly)) {
@@ -38,7 +39,7 @@ void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &
 
     void* ptr;
     Constant c;
-    SizeType i;
+    SizeType i, j;
 
     Value& arr = document["constants"];
     for (i = 0; i < arr.Size(); i++) {
@@ -63,6 +64,44 @@ void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &
     arr = document["bytecodes"];
     for (i = 0; i < arr.Size(); i++) {
         bytecodes.push_back(arr[i].GetInt());
+    }
+
+    if (document.HasMember("functions")) {
+        arr = document["functions"];
+        Function f;
+
+        for (i = 0; i < arr.Size(); i++) {
+            Value& func_arr = arr[i]["constants"];
+
+            for (j = 0; j < func_arr.Size(); j++) {
+                if (func_arr[j].IsInt())
+                    ptr = new(GC) qint64(func_arr[j].GetInt());
+                else if (func_arr[j].IsDouble())
+                    ptr = new(GC) double(func_arr[j].GetDouble());
+                else if (func_arr[j].IsBool())
+                    ptr = new(GC) bool(func_arr[j].GetBool());
+                else if (func_arr[j].IsString())
+                    ptr = new(GC) QString(func_arr[j].GetString());
+
+                c.data = ptr;
+                f.constants.push_back(c);
+            }
+
+            func_arr = arr[i]["symbols"];
+            for (j = 0; j < func_arr.Size(); j++) {
+                f.symbols.push_back(func_arr[j].GetString());
+            }
+
+            func_arr = arr[i]["bytecodes"];
+            for (j = 0; j < func_arr.Size(); j++) {
+                f.bytecodes.push_back(func_arr[j].GetInt());
+            }
+
+            functions.push_back(f);
+            f.constants.clear();
+            f.symbols.clear();
+            f.bytecodes.clear();
+        }
     }
 }
 
