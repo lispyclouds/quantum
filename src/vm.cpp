@@ -2,10 +2,10 @@
 
 void VM::printToStdOut(void* content, qint8 type) {
     static void* type_table[] = {
-        &&INT,   // 0x0
-        &&FLOAT, // 0x1
-        &&STR,   // 0x2
-        &&BOOL   // 0x3
+        &&INT,   // 0
+        &&FLOAT, // 1
+        &&STR,   // 2
+        &&BOOL   // 3
     };
 
     goto *type_table[type];
