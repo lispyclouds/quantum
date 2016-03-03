@@ -33,12 +33,13 @@ int main(int argc, char **argv) {
     QVector<QString> symbols;
     QVector<quint8> bytecodes;
     QVector<Function> functions;
+    QHash<QString, SymData> symbolTable;
 
     readJSON(args[0], constants, symbols, bytecodes, functions);
 
     GC_INIT();
     VM vm(functions);
-    vm.run(constants, symbols, bytecodes);
+    vm.run(constants, symbols, bytecodes, symbolTable);
 
     return 0;
 }

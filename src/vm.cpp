@@ -53,8 +53,8 @@ T* VM::checkDivideByZero(T* divisor) {
         exit(-4);
 }
 
-void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quint8> bytecodes) {
-    QHash<QString, SymData> symbolTable;
+void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quint8> bytecodes, QHash<QString, SymData> symbolTable) {
+    QHash<QString, SymData> calleeSymTab;
     QStack<StackFrame> bytecodeStack;
     qint8 index;
     int sp = 0;
@@ -89,7 +89,11 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         &&SCAT,   // 18
         &&FUNC,   // 19
         &&CALL,   // 20
-        &&RET     // 21
+        &&RET,    // 21
+        &&SETIP,  // 22
+        &&SETFP,  // 23
+        &&SETSP,  // 24
+        &&SETBP   // 25
     };
 
     #define DISPATCH() goto *dispatch_table[FETCH()]
@@ -225,7 +229,21 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         f = *(Function *) symbolTable[symbols[index]].value;
         f.constants.append(constants);
         f.symbols.append(symbols);
-        this->run(f.constants, f.symbols, f.bytecodes);
+        this->run(f.constants, f.symbols, f.bytecodes, calleeSymTab);
         bytecodeStack.push(this->functionReturnFrame);
+        calleeSymTab.clear();
+        DISPATCH();
+
+    SETIP:
+        data.type = INT;
+    SETFP:
+        data.type = FLOAT;
+    SETSP:
+        data.type = STRING;
+    SETBP:
+        data.type = BOOL;
+        index = FETCH();
+        data.value = constants[FETCH()].data;
+        calleeSymTab[symbols[index]] = data;
         DISPATCH();
 }
