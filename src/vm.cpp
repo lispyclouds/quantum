@@ -236,12 +236,16 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
 
     SETIP:
         data.type = INT;
+        goto pvalue;
     SETFP:
         data.type = FLOAT;
+        goto pvalue;
     SETSP:
         data.type = STRING;
+        goto pvalue;
     SETBP:
         data.type = BOOL;
+    pvalue:
         index = FETCH();
         data.value = constants[FETCH()].data;
         calleeSymTab[symbols[index]] = data;
