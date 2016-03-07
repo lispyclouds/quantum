@@ -247,8 +247,8 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
     CALL:
         index = FETCH();
         f = *(Function *) symbolTable[symbols[index]].value;
-        f.constants.append(constants);
-        f.symbols.append(symbols);
+        f.constants += constants;
+        f.symbols += symbols;
         this->run(f.constants, f.symbols, f.bytecodes, calleeSymTab);
         bytecodeStack.push(this->functionReturnFrame);
         calleeSymTab.clear();

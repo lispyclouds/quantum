@@ -37,7 +37,7 @@ void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &
         exit(-3);
     }
 
-    void* ptr;
+    void* ptr = NULL;
     Constant c;
     SizeType i, j;
 
