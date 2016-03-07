@@ -77,6 +77,11 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
     void* result;
     double *legRoom;
 
+    static void* jump_locations[] = {
+        &&jfalse,
+        &&jtrue
+    };
+
     bytecodes.push_back(0);
 
     static void* dispatch_table[] = {
@@ -121,7 +126,9 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         &&SGT,    // 38
         &&SGE,    // 39
         &&SEQ,    // 40
-        &&BEQ     // 41
+        &&BEQ,    // 41
+        &&JT,     // 42
+        &&JF      // 43
     };
 
     #define DISPATCH() goto *dispatch_table[FETCH()]
@@ -336,5 +343,18 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         result = ValueManip::compare_eq((bool *) aux_frame.content, (bool *) frame.content);
     pushbool:
         bytecodeStack.push(this->makeFrameOf(result, BOOL));
+        DISPATCH();
+
+    JT:
+        frame = bytecodeStack.pop();
+        goto *jump_locations[*(bool *) frame.content];
+    JF:
+        frame = bytecodeStack.pop();
+        goto *jump_locations[!*(bool *) frame.content];
+    jfalse:
+        sp++;
+        DISPATCH();
+    jtrue:
+        sp = FETCH();
         DISPATCH();
 }
