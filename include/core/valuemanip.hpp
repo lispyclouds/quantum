@@ -42,6 +42,46 @@ public:
 
         return result;
     }
+
+    template <class T>
+    static inline void* compare_lt(T* d1, T* d2) {
+        bool* result = new(GC) bool();
+        *((bool *) result) = *(T *) d1 < *(T *) d2;
+
+        return result;
+    }
+
+    template <class T>
+    static inline void* compare_le(T* d1, T* d2) {
+        void* result = new(GC) bool();
+        *((bool *) result) = *(T *) d1 <= *(T *) d2;
+
+        return result;
+    }
+
+    template <class T>
+    static inline void* compare_gt(T* d1, T* d2) {
+        void* result = new(GC) bool();
+        *((bool *) result) = *(T *) d1 > *(T *) d2;
+
+        return result;
+    }
+
+    template <class T>
+    static inline void* compare_ge(T* d1, T* d2) {
+        void* result = new(GC) bool();
+        *((bool *) result) = *(T *) d1 >= *(T *) d2;
+
+        return result;
+    }
+
+    template <class T>
+    static inline void* compare_eq(T* d1, T* d2) {
+        void* result = new(GC) bool();
+        *((bool *) result) = *(T *) d1 == *(T *) d2;
+
+        return result;
+    }
 };
 
 #endif

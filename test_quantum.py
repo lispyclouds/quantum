@@ -28,5 +28,8 @@ class Quantum_Test(unittest.TestCase):
     def test_function(self):
         self.assertEqual("17", run("function.json"))
 
+    def test_bool(self):
+        self.assertEqual("true", run("bool.json"))
+
 if __name__ == '__main__':
     unittest.main()

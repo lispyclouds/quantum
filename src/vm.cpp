@@ -8,6 +8,11 @@ void VM::printToStdOut(void* content, qint8 type) {
         &&BOOL   // 3
     };
 
+    static void* bool_values[] = {
+        &&FALSE,
+        &&TRUE
+    };
+
     goto *type_table[type];
 
     INT:
@@ -23,7 +28,14 @@ void VM::printToStdOut(void* content, qint8 type) {
         return;
 
     BOOL:
-        QTextStream(stdout) << *(bool *) content << endl;
+        goto *bool_values[*(bool *) content];
+
+    TRUE:
+        QTextStream(stdout) << "true" << endl;
+        return;
+
+    FALSE:
+        QTextStream(stdout) << "false" << endl;
         return;
 }
 
@@ -93,11 +105,27 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         &&SETIP,  // 22
         &&SETFP,  // 23
         &&SETSP,  // 24
-        &&SETBP   // 25
+        &&SETBP,  // 25
+        &&ILT,    // 26
+        &&ILE,    // 27
+        &&IGT,    // 28
+        &&IGE,    // 29
+        &&IEQ,    // 30
+        &&FLT,    // 31
+        &&FLE,    // 32
+        &&FGT,    // 33
+        &&FGE,    // 34
+        &&FEQ,    // 35
+        &&SLT,    // 36
+        &&SLE,    // 37
+        &&SGT,    // 38
+        &&SGE,    // 39
+        &&SEQ     // 40
     };
 
     #define DISPATCH() goto *dispatch_table[FETCH()]
     #define FETCH() bytecodes[sp++]
+    #define POP2() frame = bytecodeStack.pop(); aux_frame = bytecodeStack.pop()
 
     DISPATCH();
 
@@ -131,57 +159,49 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         DISPATCH();
 
     IADD:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::add((qint64 *) aux_frame.content, (qint64 *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
     ISUB:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::sub((qint64 *) aux_frame.content, (qint64 *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
     IMUL:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::mul((qint64 *) aux_frame.content, (qint64 *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
     IDIV:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::div((qint64 *) aux_frame.content, VM::checkDivideByZero((qint64 *) frame.content));
         bytecodeStack.push(this->makeFrameOf(result, INT));
         DISPATCH();
 
     FADD:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::add((double *) aux_frame.content, (double *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, FLOAT));
         DISPATCH();
 
     FSUB:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::sub((double *) aux_frame.content, (double *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, FLOAT));
         DISPATCH();
 
     FMUL:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::mul((double *) aux_frame.content, (double *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, FLOAT));
         DISPATCH();
 
     FDIV:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::div((double *) aux_frame.content, VM::checkDivideByZero((double *) frame.content));
         bytecodeStack.push(this->makeFrameOf(result, FLOAT));
         DISPATCH();
@@ -213,8 +233,7 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         DISPATCH();
 
     SCAT:
-        frame = bytecodeStack.pop();
-        aux_frame = bytecodeStack.pop();
+        POP2();
         result = ValueManip::add((QString *) aux_frame.content, (QString *) frame.content);
         bytecodeStack.push(this->makeFrameOf(result, STRING));
         DISPATCH();
@@ -249,5 +268,68 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         index = FETCH();
         data.value = constants[FETCH()].data;
         calleeSymTab[symbols[index]] = data;
+        DISPATCH();
+
+    ILT:
+        POP2();
+        result = ValueManip::compare_lt((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        goto pushbool;
+    ILE:
+        POP2();
+        result = ValueManip::compare_le((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        goto pushbool;
+    IGT:
+        POP2();
+        result = ValueManip::compare_gt((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        goto pushbool;
+    IGE:
+        POP2();
+        result = ValueManip::compare_ge((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        goto pushbool;
+    IEQ:
+        POP2();
+        result = ValueManip::compare_eq((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        goto pushbool;
+    FLT:
+        POP2();
+        result = ValueManip::compare_lt((double *) aux_frame.content, (double *) frame.content);
+        goto pushbool;
+    FLE:
+        POP2();
+        result = ValueManip::compare_le((double *) aux_frame.content, (double *) frame.content);
+        goto pushbool;
+    FGT:
+        POP2();
+        result = ValueManip::compare_gt((double *) aux_frame.content, (double *) frame.content);
+        goto pushbool;
+    FGE:
+        POP2();
+        result = ValueManip::compare_ge((double *) aux_frame.content, (double *) frame.content);
+        goto pushbool;
+    FEQ:
+        POP2();
+        result = ValueManip::compare_eq((double *) aux_frame.content, (double *) frame.content);
+        goto pushbool;
+    SLT:
+        POP2();
+        result = ValueManip::compare_lt((QString *) aux_frame.content, (QString *) frame.content);
+        goto pushbool;
+    SLE:
+        POP2();
+        result = ValueManip::compare_le((QString *) aux_frame.content, (QString *) frame.content);
+        goto pushbool;
+    SGT:
+        POP2();
+        result = ValueManip::compare_gt((QString *) aux_frame.content, (QString *) frame.content);
+        goto pushbool;
+    SGE:
+        POP2();
+        result = ValueManip::compare_ge((QString *) aux_frame.content, (QString *) frame.content);
+        goto pushbool;
+    SEQ:
+        POP2();
+        result = ValueManip::compare_eq((QString *) aux_frame.content, (QString *) frame.content);
+    pushbool:
+        bytecodeStack.push(this->makeFrameOf(result, BOOL));
         DISPATCH();
 }
