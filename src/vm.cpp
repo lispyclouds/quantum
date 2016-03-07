@@ -120,7 +120,8 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         &&SLE,    // 37
         &&SGT,    // 38
         &&SGE,    // 39
-        &&SEQ     // 40
+        &&SEQ,    // 40
+        &&BEQ     // 41
     };
 
     #define DISPATCH() goto *dispatch_table[FETCH()]
@@ -329,6 +330,10 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
     SEQ:
         POP2();
         result = ValueManip::compare_eq((QString *) aux_frame.content, (QString *) frame.content);
+        goto pushbool;
+    BEQ:
+        POP2();
+        result = ValueManip::compare_eq((bool *) aux_frame.content, (bool *) frame.content);
     pushbool:
         bytecodeStack.push(this->makeFrameOf(result, BOOL));
         DISPATCH();
