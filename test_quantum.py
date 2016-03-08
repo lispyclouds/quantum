@@ -31,5 +31,8 @@ class Quantum_Test(unittest.TestCase):
     def test_bool(self):
         self.assertEqual("true", run("bool.json"))
 
+    def test_if_else(self):
+        self.assertEqual("lesser", run("if_else.json"))
+
 if __name__ == '__main__':
     unittest.main()
