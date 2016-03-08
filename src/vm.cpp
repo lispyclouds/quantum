@@ -128,7 +128,8 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         &&SEQ,    // 40
         &&BEQ,    // 41
         &&JT,     // 42
-        &&JF      // 43
+        &&JF,     // 43
+        &&JMP     // 44
     };
 
     #define DISPATCH() goto *dispatch_table[FETCH()]
@@ -351,6 +352,8 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
     JF:
         frame = bytecodeStack.pop();
         goto *jump_locations[!*(bool *) frame.content];
+    JMP:
+        goto jtrue;
     jfalse:
         sp++;
         DISPATCH();
