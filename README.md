@@ -6,6 +6,7 @@
 - ``` brew install qt5 ```
 - ``` brew install autoconf ```
 - ``` brew install automake ```
+- ``` brew install libtool ```
 - In the **libgc** directory
 - ``` autoreconf -vif ```
 - ``` automake --add-missing ```
