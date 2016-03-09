@@ -25,3 +25,7 @@
 - Write awesome code
 - run ``` make -j $(sysctl -n hw.ncpu) ```
 - repeat
+
+## Installing built binary (for any UNIX system)
+- Use the install_quantum.bz2.run file
+- Install using: ``` sudo sh install_quantum.bz2.run ```
