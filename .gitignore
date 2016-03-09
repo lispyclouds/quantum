@@ -6,3 +6,5 @@ Makefile
 *.o
 *.dSYM
 gc_compiled/
+install_quantum.bz2.run
+QtCore

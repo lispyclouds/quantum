@@ -23,6 +23,9 @@ QMAKE_CXXFLAGS_RELEASE   -= -O
 QMAKE_CXXFLAGS_RELEASE   -= -O1
 QMAKE_CXXFLAGS_RELEASE   -= -O2
 QMAKE_CFLAGS_RELEASE     -= -O2
+QMAKE_POST_LINK           = ./make_installer.py
+
+QMAKE_CLEAN              += installer/Qt* installer/quantum install_quantum.xz.run
 
 linux {
   target.path             = /usr/local/bin

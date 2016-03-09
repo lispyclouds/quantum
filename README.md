@@ -7,6 +7,7 @@
 - ``` brew install autoconf ```
 - ``` brew install automake ```
 - ``` brew install libtool ```
+- ``` brew install makeself ```
 - In the **libgc** directory
 - ``` autoreconf -vif ```
 - ``` automake --add-missing ```
