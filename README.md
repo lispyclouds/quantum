@@ -27,5 +27,5 @@
 - repeat
 
 ## Installing built binary (for any UNIX system)
-- Use the install_quantum.bz2.run file
-- Install using: ``` sudo sh install_quantum.bz2.run ```
+- Use the quantum_installer_*.bz2.sh file
+- Install using: ``` sudo sh quantum_installer_*.bz2.sh ```
