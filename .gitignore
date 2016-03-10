@@ -6,5 +6,5 @@ Makefile
 *.o
 *.dSYM
 gc_compiled/
-*.bz2.run
+*.bz2.sh
 QtCore
