@@ -24,6 +24,9 @@ void readJSON(QString fileName, QVector<Constant> &constants, QVector<QString> &
         exit(-2);
     }
 
+    GC_enable_incremental();
+    GC_INIT();
+
     QByteArray array = jsonFile.readAll();
     jsonFile.close();
 

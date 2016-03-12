@@ -8,3 +8,4 @@ Makefile
 gc_compiled/
 *.bz2.sh
 QtCore
+compiler/output/
