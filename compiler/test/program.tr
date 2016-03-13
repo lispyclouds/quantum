@@ -1,0 +1,6 @@
+main = (args:string) {
+    ZERO = 0
+    PI = 3.14
+    ALIAS = PI
+    IS_TROST_COOL = true
+}
