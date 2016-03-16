@@ -1,9 +1,9 @@
 {
     "constants": [
         5,
-        10,
-        "lesser",
-        "greater"
+        8,
+        "not equal",
+        "equal"
     ],
     "symbols": [
         "a",
@@ -16,7 +16,7 @@
         15, 1,
         16, 0,
         16, 1,
-        26,
+        45,
         43, 20,
         3, 2,
         17,

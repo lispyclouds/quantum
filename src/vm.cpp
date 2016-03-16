@@ -129,7 +129,11 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         &&BEQ,    // 41
         &&JT,     // 42
         &&JF,     // 43
-        &&JMP     // 44
+        &&JMP,    // 44
+        &&INEQ,   // 45
+        &&FNEQ,   // 46
+        &&SNEQ,   // 47
+        &&BNEQ    // 48
     };
 
     #define DISPATCH() goto *dispatch_table[FETCH()]
@@ -299,6 +303,10 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         POP2();
         result = ValueManip::compare_eq((qint64 *) aux_frame.content, (qint64 *) frame.content);
         goto pushbool;
+    INEQ:
+        POP2();
+        result = ValueManip::compare_neq((qint64 *) aux_frame.content, (qint64 *) frame.content);
+        goto pushbool;    
     FLT:
         POP2();
         result = ValueManip::compare_lt((double *) aux_frame.content, (double *) frame.content);
@@ -319,6 +327,10 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         POP2();
         result = ValueManip::compare_eq((double *) aux_frame.content, (double *) frame.content);
         goto pushbool;
+    FNEQ:
+        POP2();
+        result = ValueManip::compare_neq((double *) aux_frame.content, (double *) frame.content);
+        goto pushbool;    
     SLT:
         POP2();
         result = ValueManip::compare_lt((QString *) aux_frame.content, (QString *) frame.content);
@@ -339,9 +351,18 @@ void VM::run(QVector<Constant> constants, QVector<QString> symbols, QVector<quin
         POP2();
         result = ValueManip::compare_eq((QString *) aux_frame.content, (QString *) frame.content);
         goto pushbool;
+    SNEQ:
+        POP2();
+        result = ValueManip::compare_neq((QString *) aux_frame.content, (QString *) frame.content);
+        goto pushbool;    
     BEQ:
         POP2();
         result = ValueManip::compare_eq((bool *) aux_frame.content, (bool *) frame.content);
+        goto pushbool;
+    BNEQ:
+        POP2();
+        result = ValueManip::compare_neq((bool *) aux_frame.content, (bool *) frame.content);
+        goto pushbool;    
     pushbool:
         bytecodeStack.push(this->makeFrameOf(result, BOOL));
         DISPATCH();

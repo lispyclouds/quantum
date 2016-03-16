@@ -82,6 +82,14 @@ public:
 
         return result;
     }
+
+    template <class T>
+    static inline void* compare_neq(T* d1, T* d2) {
+        void* result = new(GC) bool();
+        *((bool *) result) = *(T *) d1 != *(T *) d2;
+
+        return result;
+    }
 };
 
 #endif
