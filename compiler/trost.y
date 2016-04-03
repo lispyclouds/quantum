@@ -9,6 +9,7 @@ int yylex(void);
     double f;
     char* s;
     char* h;
+    char* n;
     bool b;
 }
 
@@ -26,7 +27,7 @@ int yylex(void);
 %token <b> BOOL_T
 %token <b> BOOL_F
 %token PRINT
-%token NAME
+%token <n> NAME
 %token <h> HEX_CONSTANT
 %token <i> INT_CONSTANT
 %token <d> FLOAT_CONSTANT
@@ -71,31 +72,35 @@ expression
     | expression MUL expression
     | expression DIV expression
     | postfix_expression
-    | NAME EQ expression
+    ;
+
+decl_stmt
+    : NAME EQ expression
     ;
 
 if_stmt
-    : IF expression THEN expression ELSE expression EOL
+    : IF expression THEN expression ELSE expression
     ;
 
 for_stmt
-    : FOR expression IN expression LBRACE stmt_list RBRACE EOL
+    : FOR expression IN expression LBRACE stmt_list RBRACE
     ;
 
 while_stmt
-    : WHILE LPAREN expression RPAREN LBRACE stmt_list RBRACE EOL
+    : WHILE LPAREN expression RPAREN LBRACE stmt_list RBRACE
     ;
 
 stmt
     : if_stmt
     | for_stmt
     | while_stmt
+    | decl_stmt
     | expression
     ;
 
 stmt_list
-    : stmt
-    | stmt_list stmt
+    : stmt EOL
+    | stmt_list stmt EOL
     ;
 
 module

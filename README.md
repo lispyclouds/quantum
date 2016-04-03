@@ -28,4 +28,4 @@
 
 ## Installing built binary (for any UNIX system)
 - Use the quantum_installer_*.bz2.sh file
-- Install using: ``` sudo sh quantum_installer_*.bz2.sh ```
+- Install using: ``` sudo sh trost_installer_*.bz2.sh ```

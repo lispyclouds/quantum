@@ -53,10 +53,10 @@ FS (f|F|l|L)
 
 "print!"                 { return PRINT; }
 
-{L}({L}|{D})*            { return NAME; }
+{L}({L}|{D})*            { yylval.n = yytext; return NAME; }
 
 0[xX]{H}                 { yylval.h = yytext; return HEX_CONSTANT; }
-0?D                      { yylval.i = atol(yytext); return INT_CONSTANT; }
+{D}+                     { yylval.i = atol(yytext); return INT_CONSTANT; }
 
 {D}+{E}{FS}?           |
 {D}*"."{D}+({E})?{FS}? |
