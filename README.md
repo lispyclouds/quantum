@@ -11,13 +11,14 @@
 - ``` make -j $(sysctl -n hw.ncpu) ```
 - ``` make install ```
 - In the **compiler** directory
-- flex -8 -o trost.lex.cpp trost.l
-- bison -d -o trost.tab.cpp trost.y
+- ``` flex -8 -o trost.lex.cpp trost.l ```
+- ``` bison -d -o trost.tab.cpp trost.y ```
 - find where qmake is. Usually its in /usr/local/opt/qt5/bin/
 - In the **quantum** directory
 - ``` qmake -o Makefile trost.pro -recursive -spec macx-clang ```
 - ``` make -j $(sysctl -n hw.ncpu) ```
-- ``` ./trost <json.file> ``` (Sample files in jsons dir)
+- ``` ./trost -j <json.file> ``` (Sample files in jsons dir)
+- ``` ./trost -j <program.tr> ```
 - Run tests with ``` python test_quantum.py ``` (Python 2.7+ needed)
 
 ## Developing
