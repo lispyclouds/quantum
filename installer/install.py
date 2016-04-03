@@ -21,6 +21,6 @@ elif _platform == "darwin":
 
     copyfile("QtCore", "%s/QtCore" % mac_path)
 
-copyfile("quantum", "/usr/local/bin/quantum")
-call(["chmod", "755", "/usr/local/bin/quantum"])
+copyfile("trost", "/usr/local/bin/trost")
+call(["chmod", "755", "/usr/local/bin/trost"])
 call(["chmod", "-R", "755", "/usr/local/opt/qt5"])

@@ -13,8 +13,8 @@ if _platform not in ["linux", "linux2", "darwin"]:
     print "Platform not supported by Trost"
     exit(-1)
 
-print "Copying the quantum executable"
-copyfile("quantum", "installer/quantum")
+print "Copying the trost executable"
+copyfile("trost", "installer/trost")
 
 print "Copying the Qt libraries"
 if _platform == "linux" or _platform == "linux2":
@@ -26,4 +26,4 @@ elif _platform == "darwin":
 
 arch = platform.machine()
 
-call(["makeself", "--bzip2", "--notemp", "./installer", "./quantum_installer_%s-%s.bz2.sh" % (os, arch), "SFX archive for Quantum", "./install.py"])
+call(["makeself", "--bzip2", "--notemp", "./installer", "./trost_installer_%s-%s.bz2.sh" % (os, arch), "SFX archive for Quantum", "./install.py"])

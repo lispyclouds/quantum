@@ -1,5 +1,5 @@
 **/.DS_Store
-quantum
+trost
 .qmake.stash
 Makefile
 *_moc.h
@@ -8,4 +8,7 @@ Makefile
 gc_compiled/
 *.bz2.sh
 QtCore
-compiler/output/
+compiler/*.lex.cpp
+compiler/*.tab.cpp
+compiler/*.tab.hpp
+compiler/*.output
