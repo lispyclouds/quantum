@@ -17,8 +17,8 @@
 - In the **quantum** directory
 - ``` qmake -o Makefile trost.pro -recursive -spec macx-clang ```
 - ``` make -j $(sysctl -n hw.ncpu) ```
+- ``` ./trost <program.tr> ```
 - ``` ./trost -j <json.file> ``` (Sample files in jsons dir)
-- ``` ./trost -j <program.tr> ```
 - Run tests with ``` python test_quantum.py ``` (Python 2.7+ needed)
 
 ## Developing
